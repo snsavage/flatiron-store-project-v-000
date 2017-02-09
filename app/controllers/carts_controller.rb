@@ -12,7 +12,6 @@ class CartsController < ApplicationController
     end
 
     current_user.current_cart = nil
-    binding.pry
 
     redirect_to cart_path(@cart)
   end
