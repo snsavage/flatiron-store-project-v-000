@@ -4,6 +4,8 @@ class Cart < ActiveRecord::Base
   has_many :line_items
   has_many :items, through: :line_items
 
+  enum status: [:open, :submitted]
+
   def total
     self.line_items.
       joins(:item).
@@ -11,7 +13,7 @@ class Cart < ActiveRecord::Base
   end
 
   def add_item(new_item)
-    if line_item = self.line_items.where(id: new_item).first
+    if line_item = self.line_items.where(item_id: new_item).first
       line_item.quantity += 1
       line_item
     else

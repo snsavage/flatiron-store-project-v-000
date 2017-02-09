@@ -1,5 +1,12 @@
 class CartsController < ApplicationController
+  before_action :authenticate_user!
+
   def show
+    if current_user.current_cart
+      @cart = current_user.current_cart
+    else
+      @cart = Cart.find(params[:id])
+    end
   end
 
   def checkout
@@ -11,8 +18,10 @@ class CartsController < ApplicationController
       item.save
     end
 
+    @cart.submitted!
     current_user.current_cart = nil
 
     redirect_to cart_path(@cart)
   end
 end
+
